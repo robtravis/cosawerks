@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Cosawerks</title>
+  <link rel="stylesheet" href="css/panel.css">
+</head>
+<body>
+  <button id="gear" class="gear" data-tip="Panel settings" aria-label="Panel settings"><svg viewBox="0 0 24 24" class="gl" aria-hidden="true"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/><circle cx="12" cy="12" r="3"/></svg></button>
+  <div id="settings" class="settings" style="display:none">
+    <div class="srow"><span class="slabel">Arrange</span><span id="arrange" class="group"></span></div>
+    <label class="chk" data-tip="Reopen floating panels at the size you left them"><input type="checkbox" id="remember"><span class="box"></span><span>Remember size</span></label>
+    <label class="chk" data-tip="Hide the section titles, collapse arrows and pop-out icons for the most compact panel"><input type="checkbox" id="hide-headers"><span class="box"></span><span>Hide headers</span></label>
+    <div id="share-row">
+      <div class="slabel">Presets</div>
+      <div class="sbtns"><button class="btn" id="share-export" data-tip="Save your arrow presets, Type looks and eases to a file you can share">Export</button><button class="btn" id="share-import" data-tip="Add presets from a file someone shared (same names are replaced)">Import</button></div>
+    </div>
+    <div id="strip-row" style="display:none">
+      <div class="slabel">Buttons</div>
+      <div class="sbtns"><button class="btn" id="strip-edit" data-tip="Reorder by dragging; click a button to change or delete it">Edit</button><button class="btn" id="strip-add" data-tip="Make a new button">Add</button></div>
+      <button class="link" id="strip-restore" data-tip="Replace all buttons with the ten starter buttons">Restore Defaults</button>
+    </div>
+    <div id="sections-row">
+      <div class="slabel">Show in this panel</div>
+      <div id="sections-box" class="secbox"></div>
+    </div>
+    <div id="cw-version" class="ver"></div>
+    <button id="reset" class="link" data-tip="Put the sections back in their default order, expanded, all shown">Reset Layout</button>
+  </div>
+  <main id="app">
+    <div id="sections"></div>
+    <div id="status" class="status" aria-live="polite"></div>
+    </main>
+  <div id="tip" class="tip"></div>
+  <script>window.CW_PANEL = "i4";</script>
+  <script src="js/version.js"></script>
+  <script src="js/bridge.js"></script>
+  <script src="js/prefs.js"></script>
+  <script src="js/scrub.js"></script>
+  <script src="js/dropdown.js"></script>
+  <script src="js/icons.js"></script>
+  <script src="js/ease-presets.js"></script>
+  <script src="js/arrow-shapes.js"></script>
+  <script src="js/glyphs.js"></script>
+  <script src="js/strip.js"></script>
+  <script src="js/panel.js"></script>
+</body>
+</html>

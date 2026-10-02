@@ -1,0 +1,37 @@
+// Generated from presets/RT-Curves.flow.json (RT) and the Motionwerks curve families (MW).
+// v = cubic-bezier [x1, y1, x2, y2] in normalised time/value space.
+CW.ease.RT = [
+    { name: "50-50", v: [0.5, 0, 0.5, 1] },
+    { name: "0-70", v: [0, 0, 0.3, 1] },
+    { name: "0-80", v: [0, 0, 0.2, 1] },
+    { name: "0-90", v: [0, 0, 0.1, 1] },
+    { name: "0-100", v: [0, 0, 0, 1] },
+    { name: "60-60", v: [0.6, 0, 0.4, 1] },
+    { name: "70-70", v: [0.7, 0, 0.3, 1] },
+    { name: "80-80", v: [0.8, 0, 0.2, 1] },
+    { name: "90-90", v: [0.9, 0, 0.1, 1] },
+    { name: "100-100", v: [1, 0, 0, 1] },
+    { name: "50-90", v: [0.5, 0, 0.1, 1] },
+    { name: "50-80", v: [0.5, 0, 0.2, 1] },
+    { name: "88-66", v: [0.88, 0, 0.66, 1] },
+    { name: "66-88", v: [0.66, 0, 0.88, 1] },
+    { name: "Standard", v: [0.4, 0, 0.2, 1] },
+    { name: "Deceleration", v: [0, 0, 0.2, 1] },
+    { name: "Acceleration", v: [0.4, 0, 1, 1] },
+    { name: "Sharp", v: [0.4, 0, 0.6, 1] }
+];
+
+CW.ease.MW = [
+    { name: "Smooth In", v: [0.12, 0, 0.39, 0] },
+    { name: "Smooth Out", v: [0.61, 1, 0.88, 1] },
+    { name: "Smooth In-Out", v: [0.37, 0, 0.63, 1] },
+    { name: "Cubic In", v: [0.32, 0, 0.67, 0] },
+    { name: "Cubic Out", v: [0.33, 1, 0.68, 1] },
+    { name: "Cubic In-Out", v: [0.65, 0, 0.35, 1] },
+    { name: "Snap In", v: [0.11, 0, 0.5, 0] },
+    { name: "Snap Out", v: [0.5, 1, 0.89, 1] },
+    { name: "Snap In-Out", v: [0.45, 0, 0.55, 1] },
+    { name: "Overshoot In", v: [0.36, 0, 0.66, -0.56] },
+    { name: "Overshoot Out", v: [0.34, 1.56, 0.64, 1] },
+    { name: "Overshoot In-Out", v: [0.68, -0.6, 0.32, 1.6] }
+];

@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ExtensionManifest Version="6.0" ExtensionBundleId="com.vivinel.cosawerks" ExtensionBundleVersion="0.9.0" ExtensionBundleName="Cosawerks"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ExtensionList>
+    <Extension Id="com.vivinel.cosawerks.panel" Version="0.2.0" />
+    <Extension Id="com.vivinel.cosawerks.anchor" Version="0.2.0" />
+    <Extension Id="com.vivinel.cosawerks.align" Version="0.2.0" />
+    <Extension Id="com.vivinel.cosawerks.trim" Version="0.2.0" />
+    <Extension Id="com.vivinel.cosawerks.ease" Version="0.2.0" />
+    <Extension Id="com.vivinel.cosawerks.comps" Version="0.2.0" />
+    <Extension Id="com.vivinel.cosawerks.strip" Version="0.2.0" />
+    <Extension Id="com.vivinel.cosawerks.i2" Version="0.2.0" />
+    <Extension Id="com.vivinel.cosawerks.i3" Version="0.2.0" />
+    <Extension Id="com.vivinel.cosawerks.i4" Version="0.2.0" />
+    <Extension Id="com.vivinel.cosawerks.arrows" Version="0.2.0" />
+    <Extension Id="com.vivinel.cosawerks.type" Version="0.2.0" />
+    <Extension Id="com.vivinel.cosawerks.stagger" Version="0.2.0" />
+  </ExtensionList>
+  <ExecutionEnvironment>
+    <HostList>
+      <Host Name="AEFT" Version="[17.5,99.9]" />
+    </HostList>
+    <LocaleList>
+      <Locale Code="All" />
+    </LocaleList>
+    <RequiredRuntimeList>
+      <RequiredRuntime Name="CSXS" Version="9.0" />
+    </RequiredRuntimeList>
+  </ExecutionEnvironment>
+  <DispatchInfoList>
+    <Extension Id="com.vivinel.cosawerks.panel">
+      <DispatchInfo>
+        <Resources><MainPath>./index.html</MainPath></Resources>
+        <Lifecycle><AutoVisible>true</AutoVisible></Lifecycle>
+        <UI>
+          <Type>Panel</Type>
+          <Menu>Cosawerks</Menu>
+          <Geometry>
+            <Size><Width>300</Width><Height>460</Height></Size>
+            <MinSize><Width>150</Width><Height>120</Height></MinSize>
+          </Geometry>
+        </UI>
+      </DispatchInfo>
+    </Extension>
+    <Extension Id="com.vivinel.cosawerks.anchor">
+      <DispatchInfo>
+        <Resources><MainPath>./panel-anchor.html</MainPath></Resources>
+        <Lifecycle><AutoVisible>true</AutoVisible></Lifecycle>
+        <UI>
+          <Type>Panel</Type>
+          <Menu>Cosawerks Anchor Point</Menu>
+          <Geometry>
+            <Size><Width>120</Width><Height>150</Height></Size>
+            <MinSize><Width>100</Width><Height>100</Height></MinSize>
+          </Geometry>
+        </UI>
+      </DispatchInfo>
+    </Extension>
+    <Extension Id="com.vivinel.cosawerks.align">
+      <DispatchInfo>
+        <Resources><MainPath>./panel-align.html</MainPath></Resources>
+        <Lifecycle><AutoVisible>true</AutoVisible></Lifecycle>
+        <UI>
+          <Type>Panel</Type>
+          <Menu>Cosawerks Align</Menu>
+          <Geometry>
+            <Size><Width>300</Width><Height>300</Height></Size>
+            <MinSize><Width>150</Width><Height>100</Height></MinSize>
+          </Geometry>
+        </UI>
+      </DispatchInfo>
+    </Extension>
+    <Extension Id="com.vivinel.cosawerks.trim">
+      <DispatchInfo>
+        <Resources><MainPath>./panel-trim.html</MainPath></Resources>
+        <Lifecycle><AutoVisible>true</AutoVisible></Lifecycle>
+        <UI>
+          <Type>Panel</Type>
+          <Menu>Cosawerks Trim Paths</Menu>
+          <Geometry>
+            <Size><Width>240</Width><Height>220</Height></Size>
+            <MinSize><Width>150</Width><Height>100</Height></MinSize>
+          </Geometry>
+        </UI>
+      </DispatchInfo>
+    </Extension>
+    <Extension Id="com.vivinel.cosawerks.ease">
+      <DispatchInfo>
+        <Resources><MainPath>./panel-ease.html</MainPath></Resources>
+        <Lifecycle><AutoVisible>true</AutoVisible></Lifecycle>
+        <UI>
+          <Type>Panel</Type>
+          <Menu>Cosawerks Ease</Menu>
+          <Geometry>
+            <Size><Width>280</Width><Height>360</Height></Size>
+            <MinSize><Width>150</Width><Height>100</Height></MinSize>
+          </Geometry>
+        </UI>
+      </DispatchInfo>
+    </Extension>
+    <Extension Id="com.vivinel.cosawerks.comps">
+      <DispatchInfo>
+        <Resources><MainPath>./panel-comps.html</MainPath></Resources>
+        <Lifecycle><AutoVisible>true</AutoVisible></Lifecycle>
+        <UI>
+          <Type>Panel</Type>
+          <Menu>Cosawerks Comps</Menu>
+          <Geometry>
+            <Size><Width>290</Width><Height>460</Height></Size>
+            <MinSize><Width>150</Width><Height>100</Height></MinSize>
+          </Geometry>
+        </UI>
+      </DispatchInfo>
+    </Extension>
+    <Extension Id="com.vivinel.cosawerks.strip">
+      <DispatchInfo>
+        <Resources><MainPath>./panel-strip.html</MainPath></Resources>
+        <Lifecycle><AutoVisible>true</AutoVisible></Lifecycle>
+        <UI>
+          <Type>Panel</Type>
+          <Menu>Cosawerks Buttons</Menu>
+          <Geometry>
+            <Size><Width>260</Width><Height>200</Height></Size>
+            <MinSize><Width>100</Width><Height>60</Height></MinSize>
+          </Geometry>
+        </UI>
+      </DispatchInfo>
+    </Extension>
+    <Extension Id="com.vivinel.cosawerks.i2">
+      <DispatchInfo>
+        <Resources><MainPath>./panel-i2.html</MainPath></Resources>
+        <Lifecycle><AutoVisible>true</AutoVisible></Lifecycle>
+        <UI>
+          <Type>Panel</Type>
+          <Menu>Cosawerks 2</Menu>
+          <Geometry>
+            <Size><Width>300</Width><Height>460</Height></Size>
+            <MinSize><Width>150</Width><Height>120</Height></MinSize>
+          </Geometry>
+        </UI>
+      </DispatchInfo>
+    </Extension>
+    <Extension Id="com.vivinel.cosawerks.i3">
+      <DispatchInfo>
+        <Resources><MainPath>./panel-i3.html</MainPath></Resources>
+        <Lifecycle><AutoVisible>true</AutoVisible></Lifecycle>
+        <UI>
+          <Type>Panel</Type>
+          <Menu>Cosawerks 3</Menu>
+          <Geometry>
+            <Size><Width>300</Width><Height>460</Height></Size>
+            <MinSize><Width>150</Width><Height>120</Height></MinSize>
+          </Geometry>
+        </UI>
+      </DispatchInfo>
+    </Extension>
+    <Extension Id="com.vivinel.cosawerks.i4">
+      <DispatchInfo>
+        <Resources><MainPath>./panel-i4.html</MainPath></Resources>
+        <Lifecycle><AutoVisible>true</AutoVisible></Lifecycle>
+        <UI>
+          <Type>Panel</Type>
+          <Menu>Cosawerks 4</Menu>
+          <Geometry>
+            <Size><Width>300</Width><Height>460</Height></Size>
+            <MinSize><Width>150</Width><Height>120</Height></MinSize>
+          </Geometry>
+        </UI>
+      </DispatchInfo>
+    </Extension>
+    <Extension Id="com.vivinel.cosawerks.arrows">
+      <DispatchInfo>
+        <Resources><MainPath>./panel-arrows.html</MainPath></Resources>
+        <Lifecycle><AutoVisible>true</AutoVisible></Lifecycle>
+        <UI>
+          <Type>Panel</Type>
+          <Menu>Cosawerks Arrows</Menu>
+          <Geometry>
+            <Size><Width>290</Width><Height>460</Height></Size>
+            <MinSize><Width>150</Width><Height>100</Height></MinSize>
+          </Geometry>
+        </UI>
+      </DispatchInfo>
+    </Extension>
+    <Extension Id="com.vivinel.cosawerks.type">
+      <DispatchInfo>
+        <Resources><MainPath>./panel-type.html</MainPath></Resources>
+        <Lifecycle><AutoVisible>true</AutoVisible></Lifecycle>
+        <UI>
+          <Type>Panel</Type>
+          <Menu>Cosawerks Type</Menu>
+          <Geometry>
+            <Size><Width>290</Width><Height>420</Height></Size>
+            <MinSize><Width>150</Width><Height>100</Height></MinSize>
+          </Geometry>
+        </UI>
+      </DispatchInfo>
+    </Extension>
+    <Extension Id="com.vivinel.cosawerks.stagger">
+      <DispatchInfo>
+        <Resources><MainPath>./panel-stagger.html</MainPath></Resources>
+        <Lifecycle><AutoVisible>true</AutoVisible></Lifecycle>
+        <UI>
+          <Type>Panel</Type>
+          <Menu>Cosawerks Stagger</Menu>
+          <Geometry>
+            <Size><Width>290</Width><Height>330</Height></Size>
+            <MinSize><Width>150</Width><Height>100</Height></MinSize>
+          </Geometry>
+        </UI>
+      </DispatchInfo>
+    </Extension>
+  </DispatchInfoList>
+</ExtensionManifest>

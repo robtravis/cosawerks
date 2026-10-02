@@ -1,0 +1,22 @@
+{
+  "id": "com.vivinel.cosawerks.uxptest",
+  "name": "Cosawerks UXP test",
+  "version": "0.0.1",
+  "main": "index.html",
+  "manifestVersion": 6,
+  "host": [
+    { "app": "aftereffects", "minVersion": "26.3" }
+  ],
+  "entrypoints": [
+    {
+      "id": "cwtest",
+      "type": "panel",
+      "label": { "default": "Cosawerks UXP test" },
+      "minimumSize": { "width": 240, "height": 200 },
+      "preferredDockedSize": { "width": 300, "height": 360 },
+      "preferredFloatingSize": { "width": 320, "height": 400 }
+    }
+  ],
+  "featureFlags": { "enableSWCSupport": true },
+  "requiredPermissions": { "localFileSystem": "request" }
+}
