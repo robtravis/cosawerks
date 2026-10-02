@@ -6,6 +6,7 @@ Effects' own look and update the selected layer live.
 
 Named for CoSA, the Company of Science and Art that made the original After Effects.
 
+- **Download:** the signed `.zxp` is on the [Releases page](https://github.com/robtravis/cosawerks/releases)
 - **Install:** [docs/INSTALL.md](docs/INSTALL.md)
 - **Use:** [docs/USER-GUIDE.md](docs/USER-GUIDE.md)
 - **What changed:** [CHANGELOG.md](CHANGELOG.md)
