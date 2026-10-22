@@ -393,6 +393,9 @@
     { name: "Bold",          v: { shape: 2, size: 80, tail: false, reverse: false, mode: 1, animate: false, grow: 0 } },
     { name: "Pointer",       v: { shape: 3, size: 50, tail: false, reverse: false, mode: 1, animate: false, grow: 0 } },
     { name: "Double Ended",  v: { shape: 2, size: 40, tail: true, tailSame: true, reverse: false, mode: 1, animate: false, grow: 0 } },
+    { name: "Callout",       v: { shape: 7, size: 30, tail: true, tailSame: true, reverse: false, mode: 1, animate: false, grow: 0 } },
+    { name: "Callout Build", v: { shape: 7, size: 30, tail: true, tailSame: true, reverse: false, mode: 4, animate: true, grow: 0 } },
+    { name: "Center Out",    v: { shape: 2, size: 40, tail: true, tailSame: true, reverse: false, mode: 4, animate: true, grow: 0 } },
     { name: "Open Double",   v: { shape: 5, size: 40, tail: true, tailSame: true, reverse: false, mode: 1, animate: false, grow: 0 } },
     { name: "Feathered",     v: { shape: 3, size: 50, tail: true, tailSame: false, tailShape: 4, reverse: false, mode: 1, animate: false, grow: 0 } },
     { name: "Heart",         v: { shape: 6, size: 50, tail: false, reverse: false, mode: 1, animate: false, grow: 0 } },
@@ -435,8 +438,8 @@
       delBtn.style.display = isUser(a.preset) ? "" : "none";
     }
     sel.addEventListener("change", function () {
-      a.preset = sel.value; var v = presetByName(a.preset).v; a.animate = !!v.animate; animBox.checked = a.animate; durRow.style.display = a.animate ? "flex" : "none"; save();
-      delBtn.style.display = isUser(a.preset) ? "" : "none";
+      a.preset = sel.value; var v = presetByName(a.preset).v; a.animate = !!v.animate; animBox.checked = a.animate; durRow.style.display = a.animate ? "flex" : "none"; a.head = ""; save();
+      delBtn.style.display = isUser(a.preset) ? "" : "none"; if (typeof fillHead === "function") fillHead();
       live(v);
     });
 
@@ -447,7 +450,7 @@
       host.value("CW.arrow.readString()").then(function (r) {
         r = String(r);
         if (r === "null" || r === "") { say("Select an arrow layer to copy its settings from.", true); return; }
-        var v = {}; r.split(";").forEach(function (kv) { var p = kv.split("="); v[p[0]] = parseFloat(p[1]); });
+        var v = {}; r.split(";").forEach(function (kv) { var at = kv.indexOf("="), k = kv.substr(0, at), val = kv.substr(at + 1); if (k === "head") v.customHead = val; else v[k] = parseFloat(val); });
         ["tail", "tailSame", "reverse", "animate"].forEach(function (k) { v[k] = v[k] === 1; });
         var name = nameIn.value.replace(/\s+/g, " ").trim() || ("Mine " + (userPresets.length + 1)), found = false;
         for (var i = 0; i < ARROW_PRESETS.length; i++) if (ARROW_PRESETS[i].name === name) name += " 2";
@@ -459,6 +462,45 @@
     }
     var okBtn = btn(saveRow, "Save", "", "primary", doSaveArrow), noBtn = btn(saveRow, "Cancel", "", "", function () { nameIn.value = ""; saveRow.style.display = "none"; });
     nameIn.addEventListener("keydown", function (e) { if (e.key === "Enter") doSaveArrow(); if (e.key === "Escape") saveRow.style.display = "none"; });
+
+    // Heads you drew: draw a head with the pen pointing right (tip on the right), select that path, press +
+    var heads = store.get("arrowHeads", []);
+    function saveHeads() { store.set("arrowHeads", heads); }
+    function headByName(n) { for (var i = 0; i < heads.length; i++) if (heads[i].name === n) return heads[i]; return null; }
+    if (a.head === undefined) a.head = "";
+    var hr = row(blk, "Head"); var headSel = CWDropdown(hr, [], a.head);
+    headSel.setAttribute("data-tip", "Use a head you drew instead of the preset's. + saves the selected path as a head");
+    var hAdd = button(hr, icon("plus"), "Save the selected path as a head. Draw it pointing right with the tip on the right, then select that path", function () { headRow2.style.display = "flex"; headName.focus(); }, "small");
+    var hDel = button(hr, "\u00d7", "Delete this saved head", function () {
+      for (var i = 0; i < heads.length; i++) if (heads[i].name === a.head) { heads.splice(i, 1); break; }
+      saveHeads(); a.head = ""; save(); fillHead();
+    }, "small");
+    function fillHead() {
+      var items = [["", "From preset"]];
+      if (heads.length) items.push({ group: "Mine", items: heads.map(function (h) { return [h.name, h.name]; }) });
+      headSel.setItems(items); headSel.value = a.head || ""; hDel.style.display = a.head ? "" : "none";
+    }
+    headSel.addEventListener("change", function () {
+      a.head = headSel.value; save(); hDel.style.display = a.head ? "" : "none";
+      var h = a.head ? headByName(a.head) : null;
+      if (h) live({ shape: 8, customHead: h.head }); else live({ shape: presetByName(a.preset).v.shape || 2 });
+    });
+    var headRow2 = div(blk, "saverow"); headRow2.style.display = "none";
+    var headName = document.createElement("input"); headName.type = "text"; headName.className = "num txt"; headName.placeholder = "Head name"; headRow2.appendChild(headName);
+    function doSaveHead() {
+      host.value("CW.arrow.readHead()").then(function (r) {
+        r = String(r);
+        if (r === "null" || r === "" || r.indexOf(":") < 0) { say("Select the path you drew (click it in the timeline), then press +.", true); return; }
+        var name = headName.value.replace(/\s+/g, " ").trim() || ("Head " + (heads.length + 1)), found = false;
+        for (var i = 0; i < heads.length; i++) if (heads[i].name === name) { heads[i].head = r; found = true; }
+        if (!found) heads.push({ name: name, head: r });
+        saveHeads(); a.head = name; save(); headName.value = ""; headRow2.style.display = "none"; fillHead();
+        live({ shape: 8, customHead: r });
+      });
+    }
+    btn(headRow2, "Save", "", "primary", doSaveHead); btn(headRow2, "Cancel", "", "", function () { headName.value = ""; headRow2.style.display = "none"; });
+    headName.addEventListener("keydown", function (e) { if (e.key === "Enter") doSaveHead(); if (e.key === "Escape") headRow2.style.display = "none"; });
+    fillHead();
 
     var animBox;
     var chk = check(blk, "Animate (build the arrow on)", a.animate, function (v) { a.animate = v; save(); durRow.style.display = v ? "flex" : "none"; live({ animate: v }); });
@@ -472,10 +514,12 @@
     fillSel();
     var acts = div(blk, "actions");
     function opts() {
-      var v = presetByName(a.preset).v;
-      return { type: TYPES[(v.shape || 2) - 1][0], mode: ["draw", "drawoff", "travel"][(v.mode || 1) - 1], animate: a.animate, grow: v.grow || 0, frames: a.frames,
+      var v = presetByName(a.preset).v, h = a.head ? headByName(a.head) : null, custom = h ? h.head : (v.customHead || null);
+      var o = { type: custom ? "custom" : TYPES[(v.shape || 2) - 1][0], mode: ["draw", "drawoff", "travel", "center"][(v.mode || 1) - 1], animate: a.animate, grow: v.grow || 0, frames: a.frames,
                size: v.size || 40, length: v.length || 30, reverse: !!v.reverse, tail: !!v.tail, tailSame: v.tailSame !== false,
                tailType: TYPES[(v.tailShape || 4) - 1][0], polygonPoints: v.polygonPoints || 5, angle: v.angle || 0, asNew: false };
+      if (custom) o.customHead = custom;
+      return o;
     }
     btn(acts, "Arrow", "A shape layer selected: add an arrow head to its path. Nothing selected: make a new arrow", "primary", function () { host.call("arrow.run", [opts()]).then(done); });
     btn(acts, "Remove", "Remove the arrow from the selected layer, keeping its line", "", function () { host.call("arrow.removeSelected", []).then(done); });
@@ -918,7 +962,7 @@
 
   // ---- Sharing presets: your saved arrow presets, Type looks and eases as one .cwpresets file
   (function () {
-    var KEYS = [["arrowUser", "arrows", "arrow preset"], ["typeUser", "types", "Type look"], ["easeMine", "eases", "ease"]];
+    var KEYS = [["arrowUser", "arrows", "arrow preset"], ["arrowHeads", "heads", "arrow head"], ["typeUser", "types", "Type look"], ["easeMine", "eases", "ease"]];
     function count(o) { var n = 0; KEYS.forEach(function (k) { n += (o[k[1]] || []).length; }); return n; }
     function validName(x) { return x && typeof x.name === "string" && x.name.length > 0; }
     $("share-export").addEventListener("click", function () {
@@ -947,6 +991,7 @@
           if (k[0] === "easeMine") incoming = incoming.filter(function (x) { return x.v && x.v.length === 4 && x.v.every(function (n) { return typeof n === "number"; }); });
           if (k[0] === "typeUser") incoming = incoming.filter(function (x) { return x.props && x.props.length; });
           if (k[0] === "arrowUser") incoming = incoming.filter(function (x) { return x.v && typeof x.v === "object"; });
+          if (k[0] === "arrowHeads") incoming = incoming.filter(function (x) { return typeof x.head === "string" && /^[01]:/.test(x.head) && x.head.split(":").length === 4; });
           incoming.forEach(function (x) {
             var at = -1; for (var i = 0; i < mine.length; i++) if (mine[i].name === x.name) at = i;
             if (at >= 0) { mine[at] = x; replaced++; } else { mine.push(x); added++; }

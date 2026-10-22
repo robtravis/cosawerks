@@ -27,6 +27,12 @@ build, and the Direction button reverses the selected paths. Overlap and Random 
 - **Arrow** adds an arrow head to the selected shape layer's path, or makes a new curved arrow if no shape layer is selected.
   Everything is one shape layer, driven by an **Arrow** effect (head shape, size, angle, grow-in, tail, travel length, reverse ...).
 - Pick a **Preset** (or save your own with +). Tick **Animate** to build it on over *Duration* frames (eased 50-80).
+- **Callouts:** the **Flat Line** head is a square-ended tick at 90° to the line, for measurements. The **Callout** preset puts one at each end.
+- **From the center:** the effect's *Animation* menu has **From Center**: both ends grow out from the middle of the path, each with its head
+  (turn on *Show Tail* for the start end). The **Callout Build** and **Center Out** presets use it.
+- **Your own head:** draw a head with the pen pointing right with its tip on the right, select that path, and press **+** next to **Head**. It is
+  centred and scaled like the built-in heads and can be picked from the **Head** menu for any arrow (it uses the effect's *Custom* shape). A closed
+  path fills, an open one strokes. Saved heads travel with Export and Import.
 - **Follow Path:** select a path, then the layers that should ride it. **Path Nulls:** *Drive Path* puts a null on every point so you can reshape
   the path by moving nulls; *Follow Path* makes nulls that ride the points; *Release* makes a driven path ordinary again.
 

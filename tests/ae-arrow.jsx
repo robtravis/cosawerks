@@ -90,8 +90,8 @@ try {
   var hasAll=true; var need=["CW Head","CW Head Polygon","CW Tail","CW Tail Polygon","CW Shapes","G"]; for (var ni=0;ni<need.length;ni++){ var f=false; for (var nj=0;nj<names.length;nj++) if (names[nj]===need[ni]) f=true; if (!f) hasAll=false; }
   T("all six groups are present", hasAll, names.join(","));
   var fx=SH.property("ADBE Effect Parade"); T("one Arrow effect on the layer", fx.numProperties===1 && fx.property(1).matchName===CW.arrow.FX, fx.numProperties);
-  T("shape and animate are real dropdowns (1..7 and 1..3)", ctl(SH,"hshape").maxValue===7 && ctl(SH,"mode").maxValue===3, ctl(SH,"hshape").maxValue);
-  T("the shape library holds seven keys", grp(SH,"CW Shapes").property("ADBE Vectors Group").property("Shapes").property("ADBE Vector Shape").numKeys===7, "");
+  T("shape and animate are real dropdowns (1..8 and 1..4)", ctl(SH,"hshape").maxValue===8 && ctl(SH,"mode").maxValue===4, ctl(SH,"hshape").maxValue);
+  T("the shape library holds eight keys (seven built in, one Custom)", grp(SH,"CW Shapes").property("ADBE Vectors Group").property("Shapes").property("ADBE Vector Shape").numKeys===8, "");
   T("no expression errors anywhere in the layer", errors(SH).length===0, errors(SH).join(" | "));
   T("the build is eased 50-80 by default (out 50%, in 80%), then made linear here so the position checks below are exact", EASEINFO==="50 / 80" || /^(49|50)(\.\d+)? \/ (79|80)/.test(EASEINFO), EASEINFO);
   T("hidden before anything is drawn", gop(SH,"CW Head",0)===0, gop(SH,"CW Head",0));
@@ -153,8 +153,8 @@ try {
   T("Duration is live: the end key moves", chg===1 && Math.abs(pg.keyTime(pg.numKeys)-(pg.keyTime(1)+2))<0.05, pg.keyTime(pg.numKeys));
   log("== F every head shape, new arrow, panel update, remove");
   var bad=[];
-  for (var si=1; si<=7; si++){ setc(SH,"hshape",si); var er=errors(SH); if (er.length) bad.push(si+": "+er.join(";")); var pp=gpos(SH,"CW Head",1); if (isNaN(pp[0])) bad.push(si+": NaN"); }
-  T("all seven head shapes evaluate with no errors", bad.length===0, bad.join(" | "));
+  for (var si=1; si<=8; si++){ setc(SH,"hshape",si); var er=errors(SH); if (er.length) bad.push(si+": "+er.join(";")); var pp=gpos(SH,"CW Head",1); if (isNaN(pp[0])) bad.push(si+": NaN"); }
+  T("all eight head shapes evaluate with no errors", bad.length===0, bad.join(" | "));
   clear(); desel(); CW.arrow.run({type:"heart",mode:"draw",animate:true,frames:30,size:40,length:30,reverse:false,tail:false,tailSame:true,tailType:"arrowtail",polygonPoints:5,asNew:true});
   var NA=comp.layer("Arrow"); T("New Arrow makes one layer", !!NA && comp.numLayers===1, comp.numLayers);
   T("its head starts at the path's first point (-300,70)", near(gpos(NA,"CW Head",0.0001)[0],-300,2)&&near(gpos(NA,"CW Head",0.0001)[1],70,2), J(gpos(NA,"CW Head",0.0001)));
@@ -167,6 +167,55 @@ try {
   desel(); other.selected=true; CW.arrow.removeSelected();
   T("remove takes off the groups, trim and controls from that layer only", other.property("ADBE Effect Parade").numProperties===0 && !other.property("ADBE Root Vectors Group").property("CW Head") && !!NA.property("ADBE Root Vectors Group").property("CW Head"), "");
   T("what remains on the path layer is just the user's line", other.property("ADBE Root Vectors Group").numProperties===1 && !other.property("ADBE Root Vectors Group").property("G").property("ADBE Vectors Group").property("CW Arrow Trim"), other.property("ADBE Root Vectors Group").numProperties);
+  log("== G flat line, closed or open, centre out, a head you drew");
+  function headProp(L,role,kind){ var g=grp(L,role).property("ADBE Vectors Group"); return g.property(kind); }       // role: "CW Head"; kind: stroke / fill group item
+  function strokeOf(L,role,name,t){ return L.property("ADBE Root Vectors Group").property(role).property("ADBE Vectors Group").property(name).property("ADBE Vector Stroke Opacity").valueAtTime(t,false); }
+  function strokeOp(L,role,t){ return Math.max(strokeOf(L,role,"Stroke Round",t),strokeOf(L,role,"Stroke Flat",t)); }
+  function fillOp(L,role,t){ return headProp(L,role,"ADBE Vector Graphic - Fill").property("ADBE Vector Fill Opacity").valueAtTime(t,false); }
+
+  function trimV(L,t,which){ return grp(L,"G").property("ADBE Vectors Group").property(CW.arrow.TRIM).property(which).valueAtTime(t,false); }
+  clear(); var FL=pathLayer("Flat",[-400,0],[400,0]); arrowOn(FL,{type:"line",animate:false});
+  T("the Flat Line is an open shape: it strokes and does not fill", near(strokeOp(FL,"CW Head",0),100,0.01) && near(fillOp(FL,"CW Head",0),0,0.01), strokeOp(FL,"CW Head",0)+" "+fillOp(FL,"CW Head",0));
+  T("the Flat Line uses the square-ended stroke, not the round one", near(strokeOf(FL,"CW Head","Stroke Flat",0),100,0.01) && near(strokeOf(FL,"CW Head","Stroke Round",0),0,0.01), strokeOf(FL,"CW Head","Stroke Flat",0)+" "+strokeOf(FL,"CW Head","Stroke Round",0));
+  T("and the square stroke really is butt-capped (the round one round)", FL.property("ADBE Root Vectors Group").property("CW Head").property("ADBE Vectors Group").property("Stroke Flat").property("ADBE Vector Stroke Line Cap").value===1 && FL.property("ADBE Root Vectors Group").property("CW Head").property("ADBE Vectors Group").property("Stroke Round").property("ADBE Vector Stroke Line Cap").value===2, "");
+  setc(FL,"hshape",5); T("Open Arrow uses the round-ended stroke", near(strokeOf(FL,"CW Head","Stroke Round",0),100,0.01) && near(strokeOf(FL,"CW Head","Stroke Flat",0),0,0.01), strokeOf(FL,"CW Head","Stroke Round",0)+" "+strokeOf(FL,"CW Head","Stroke Flat",0));
+  setc(FL,"hshape",2); T("a closed head fills and does not stroke (decided by the shape, not a fixed list)", near(fillOp(FL,"CW Head",0),100,0.01) && near(strokeOp(FL,"CW Head",0),0,0.01), fillOp(FL,"CW Head",0)+" "+strokeOp(FL,"CW Head",0));
+  setc(FL,"hshape",7); T("the shaft runs right to a Flat Line (no reach to trim back)", near(trimV(FL,0,"ADBE Vector Trim End"),100,0.01), trimV(FL,0,"ADBE Vector Trim End"));
+  setc(FL,"hshape",2); T("and stops short of a filled head", trimV(FL,0,"ADBE Vector Trim End")<99, trimV(FL,0,"ADBE Vector Trim End"));
+
+  log("-- centre out");
+  clear(); var CO=pathLayer("Centre",[-400,0],[400,0]); arrowOn(CO,{type:"line",mode:"center",tail:true,tailSame:true,frames:30});
+  var pg=CW.arrow.ctl(CO,"progress"); while (pg.numKeys>0) pg.removeKey(1); pg.setValueAtTime(0,0); pg.setValueAtTime(1,100);
+  pg.setInterpolationTypeAtKey(1,KeyframeInterpolationType.LINEAR,KeyframeInterpolationType.LINEAR); pg.setInterpolationTypeAtKey(2,KeyframeInterpolationType.LINEAR,KeyframeInterpolationType.LINEAR);
+  T("From Center is the fourth animation", ctl(CO,"mode").value===4 && ctl(CO,"mode").maxValue===4, ctl(CO,"mode").value);
+  T("at the start nothing is drawn: both ends sit at the middle and the heads are hidden", near(trimV(CO,0,"ADBE Vector Trim Start"),50,0.01) && near(trimV(CO,0,"ADBE Vector Trim End"),50,0.01) && gop(CO,"CW Head",0)===0, trimV(CO,0,"ADBE Vector Trim Start")+" "+trimV(CO,0,"ADBE Vector Trim End"));
+  T("half way it has grown a quarter each side (25% to 75%)", near(trimV(CO,0.5,"ADBE Vector Trim Start"),25,0.5) && near(trimV(CO,0.5,"ADBE Vector Trim End"),75,0.5), trimV(CO,0.5,"ADBE Vector Trim Start")+" "+trimV(CO,0.5,"ADBE Vector Trim End"));
+  T("at the end it is the whole line", near(trimV(CO,1.0,"ADBE Vector Trim Start"),0,0.5) && near(trimV(CO,1.0,"ADBE Vector Trim End"),100,0.5), trimV(CO,1.0,"ADBE Vector Trim Start")+" "+trimV(CO,1.0,"ADBE Vector Trim End"));
+  T("the heads travel out with the ends: head at 75% (x=200), tail at 25% (x=-200), half way", near(gpos(CO,"CW Head",0.5)[0],200,2) && near(gpos(CO,"CW Tail",0.5)[0],-200,2), gpos(CO,"CW Head",0.5)[0]+" "+gpos(CO,"CW Tail",0.5)[0]);
+  T("the tail points out the other way", near(Math.abs(grot(CO,"CW Tail",0.5)-grot(CO,"CW Head",0.5)),180,0.5), grot(CO,"CW Tail",0.5)+" vs "+grot(CO,"CW Head",0.5));
+  T("no expression errors", errors(CO).length===0, errors(CO).join(" | "));
+
+  log("-- a head you drew");
+  var DR=pathLayer("Drawn",[-60,-20],[60,20]);                      // a layer with a path we will read as the head
+  var shp=pathItem(DR).property("ADBE Vector Shape").value; shp.vertices=[[10,20],[80,50],[10,80]]; shp.inTangents=[[0,0],[0,0],[0,0]]; shp.outTangents=[[0,0],[0,0],[0,0]]; shp.closed=true; pathItem(DR).property("ADBE Vector Shape").setValue(shp);
+  desel(); pathItem(DR).selected=true;
+  var packed=CW.arrow.readHead();
+  var hd=CW.arrowShapes.unpack(packed);
+  T("readHead reads the selected path as a head: tip at the origin, 100 units long, centred", hd && near(hd.vertices[1][0],0,0.01) && near(hd.vertices[1][1],0,0.01) && near(hd.vertices[0][0],-100*70/70,0.5) && hd.closed===true, packed);
+  desel(); T("readHead says null with no path selected", CW.arrow.readHead()==="null", "");
+  clear(); var CU=pathLayer("Custom",[-400,0],[400,0]); arrowOn(CU,{type:"custom",customHead:packed,animate:false});
+  var lib=grp(CU,"CW Shapes").property("ADBE Vectors Group").property("Shapes").property("ADBE Vector Shape");
+  T("a Custom arrow carries the drawn head in key 8", ctl(CU,"hshape").value===8 && near(lib.keyValue(8).vertices[1][0],0,0.01) && lib.keyValue(8).closed===true, ctl(CU,"hshape").value);
+  T("a closed drawn head fills", near(fillOp(CU,"CW Head",0),100,0.01) && near(strokeOp(CU,"CW Head",0),0,0.01), fillOp(CU,"CW Head",0));
+  var reach0=trimV(CU,0,"ADBE Vector Trim End");
+  T("the shaft stops at the drawn head's base (its reach is worked out from its own outline)", reach0<99.5 && reach0>85, reach0);
+  var open=CW.arrowShapes.pack({vertices:[[-60,-40],[0,0],[-60,40]],inTangents:[[0,0],[0,0],[0,0]],outTangents:[[0,0],[0,0],[0,0]],closed:false});
+  desel(); CU.selected=true; CW.arrow.update({customHead:open});
+  T("a new head can be swapped in live", lib.keyValue(8).closed===false && near(lib.keyValue(8).vertices[0][0],-60,0.01), "");
+  T("an open drawn head strokes instead, and the shaft runs right to it", near(strokeOp(CU,"CW Head",0),100,0.01) && near(fillOp(CU,"CW Head",0),0,0.01) && near(trimV(CU,0,"ADBE Vector Trim End"),100,0.01), strokeOp(CU,"CW Head",0)+" "+trimV(CU,0,"ADBE Vector Trim End"));
+  T("no expression errors with a drawn head", errors(CU).length===0, errors(CU).join(" | "));
+  var rs=CW.arrow.readString(); T("saving the arrow as a preset carries the drawn head", rs.indexOf("head=")>0 && rs.indexOf("shape=8")===0, rs.slice(0,120));
+  desel(); CU.selected=true; CW.arrow.removeSelected();
   clear(); log("DONE");
 } catch(e){ log("EXCEPTION: "+e.toString()+" line "+e.line); }
 LOG.close();

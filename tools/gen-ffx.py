@@ -15,14 +15,14 @@ import struct, sys, os, re
 # under one ID raise "effect control conversion required". Keep CW.arrow.FX (src/modules/arrow.jsx) in step.
 MATCH = b"Pseudo/cwArrow0002"
 EFFECT_NAME = "Arrow"
-SHAPES = "Polygon|Triangle|Arrow Head|Arrow Tail|Open Arrow|Heart|Line"
+SHAPES = "Polygon|Triangle|Arrow Head|Arrow Tail|Open Arrow|Heart|Flat Line|Custom"
 EFFECTS = {}
 
 # (kind, name, default, extra)  kind: slider cb popup angle group end
 ARROW_SPEC = [
     ("cb", "Animate", 0, {}),
     ("slider", "Progress", 0, dict(vmin=0, vmax=100, smin=0, smax=100, prec=1, pct=True)),
-    ("popup", "Animation", 1, dict(items="Draw|Draw & Off|Travel")),
+    ("popup", "Animation", 1, dict(items="Draw|Draw & Off|Travel|From Center")),
     ("group", "Travel", 0, {}),
     ("slider", "Travel Length", 30, dict(vmin=1, vmax=100, smin=1, smax=100, prec=1, pct=True)),
     ("end", "", 0, {}),
@@ -194,5 +194,5 @@ if __name__ == "__main__":
     out = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "dist", "gen")      # NOT presets/: see docs/RELEASING.md
     os.makedirs(out, exist_ok=True)
     # Bump each ID (and CW.arrow.FX / CW.typefx.FX in src/modules) whenever that effect's SPEC changes.
-    build(ref, os.path.join(out, "Cosawerks Arrow.ffx"), ARROW_SPEC, b"Pseudo/cwArrow0002", "Arrow")
+    build(ref, os.path.join(out, "Cosawerks Arrow.ffx"), ARROW_SPEC, b"Pseudo/cwArrow0003", "Arrow")
     build(ref, os.path.join(out, "Cosawerks Type.ffx"), TYPE_SPEC(), b"Pseudo/cwType0003", "Type")

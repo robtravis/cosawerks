@@ -13,7 +13,8 @@ tools/make-cert.sh            # makes certs/cosawerks.p12 (not committed). Back 
 
 1. Bump `ExtensionBundleVersion` in `cep/CSXS/manifest.xml` (three numbers, e.g. 0.9.1) and add a line to `CHANGELOG.md`.
 2. If you changed an effect's controls (`tools/gen-ffx.py`), bump its match name there **and** in `src/modules/arrow.jsx` / `typefx.jsx`
-   (After Effects caches a pseudo effect by that ID for the whole session), then run `python3 tools/gen-ffx.py`. That writes a first draft to `dist/gen/`. Apply the draft to a layer in After Effects, click the effect,
+   (After Effects caches a pseudo effect by that ID for the whole session), then run `python3 tools/gen-ffx.py`. If you only add items to a dropdown or change the effect ID, patch the shipped file instead: `python3 tools/patch-ffx.py presets/"Cosawerks Arrow.ffx" dist/gen/"Cosawerks Arrow.ffx" --match OLD NEW --popup "Shape=a|b|c"`
+   (no other file needed). Adding or removing controls needs `tools/gen-ffx.py`, which writes a first draft to `dist/gen/`. Apply the draft to a layer in After Effects, click the effect,
    use Animation > Save Animation Preset, and put the saved file in `presets/` under the same name: the shipped presets are always
    After Effects-written files.
 3. Run the AE suites in `tests/` (scratch project only; see README "Tests") and `node tests/*.test.js`.
